@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
-	"time"
 	"strconv"
+	"time"
 )
 
 // GLOBAL VARS
@@ -15,23 +15,23 @@ var readsAll = make(chan *readAllOp)
 var readsOne = make(chan *readOneOp)
 var writes = make(chan *writeOp, 20)
 var pairs = map[string]string{
-	"BTCUSD": "USDT-BTC",
-	"ETHUSD": "USDT-ETH",
-	"ETHBTC": "BTC-ETH",
-	"LTCUSD": "USDT-LTC",
-	"LTCBTC": "BTC-LTC",
-	"XRPUSD": "USDT-XRP",
-	"XRPBTC": "BTC-XRP",
-	"ZECUSD": "USDT-ZEC",
-	"ZECBTC": "BTC-ZEC",
-	"XMRUSD": "USDT-XMR",
-	"XMRBTC": "BTC-XMR",
+	"BTCUSD":  "USDT-BTC",
+	"ETHUSD":  "USDT-ETH",
+	"ETHBTC":  "BTC-ETH",
+	"LTCUSD":  "USDT-LTC",
+	"LTCBTC":  "BTC-LTC",
+	"XRPUSD":  "USDT-XRP",
+	"XRPBTC":  "BTC-XRP",
+	"ZECUSD":  "USDT-ZEC",
+	"ZECBTC":  "BTC-ZEC",
+	"XMRUSD":  "USDT-XMR",
+	"XMRBTC":  "BTC-XMR",
 	"DASHUSD": "USDT-DASH",
 	"DASHBTC": "BTC-DASH",
-	"BCHUSD": "USDT-BCC",
-	"BCHBTC": "BTC-BCC",
-	"ETCUSD": "USDT-ETC",
-	"ETCBTC": "BTC-ETC",
+	"BCHUSD":  "USDT-BCC",
+	"BCHBTC":  "BTC-BCC",
+	"ETCUSD":  "USDT-ETC",
+	"ETCBTC":  "BTC-ETC",
 }
 
 // Get an orderbook from Kraken api
@@ -68,7 +68,6 @@ func getOrderbook(pair string) (aOrderbookResponse OrderbookResponse, err error)
 	return orderbookResponse, nil
 }
 
-
 // STATE
 func InitState() {
 	var state = make(map[string]Orderbook)
@@ -95,21 +94,21 @@ func write(pair string, result OrderbookResult) {
 
 	for _, ask := range result.Sell {
 		order := Order{
-			Price: strconv.FormatFloat(ask.Rate, 'f', 8, 64),
+			Price:  strconv.FormatFloat(ask.Rate, 'f', 8, 64),
 			Volume: strconv.FormatFloat(ask.Quantity, 'f', 8, 64)}
 		asks = append(asks, order)
 	}
 
 	for _, bid := range result.Buy {
-		bid :=  Order{
-			Price: strconv.FormatFloat(bid.Rate, 'f', 8, 64),
+		bid := Order{
+			Price:  strconv.FormatFloat(bid.Rate, 'f', 8, 64),
 			Volume: strconv.FormatFloat(bid.Quantity, 'f', 8, 64)}
-		bids = append(asks, bid)
+		bids = append(bids, bid)
 	}
 
 	orderbook := Orderbook{
-		Asks: asks,
-		Bids: bids,
+		Asks:      asks,
+		Bids:      bids,
 		Timestamp: time.Now().Unix()}
 
 	write := &writeOp{
