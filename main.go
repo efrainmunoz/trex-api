@@ -1,11 +1,11 @@
 package main
 
 import (
-	"github.com/efrainmunoz/trex-api/ticker"
 	"github.com/efrainmunoz/trex-api/orderbook"
+	"github.com/efrainmunoz/trex-api/ticker"
+	"github.com/efrainmunoz/trex-api/trades"
 	"github.com/gorilla/mux"
 	"net/http"
-	"github.com/efrainmunoz/trex-api/trades"
 )
 
 // MAIN
@@ -33,5 +33,5 @@ func main() {
 	router.HandleFunc("/trades/{pair}", trades.Get).Methods("GET")
 
 	// Start the server
-	http.ListenAndServe(":8000", router)
+	http.ListenAndServe(":8002", router)
 }
